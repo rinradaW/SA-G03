@@ -3,10 +3,10 @@ package controller
 
 import (
 
-        "net/http"
+    "net/http"
 
-        "github.com/rinradaW/SA-G03/entity"
-        "github.com/gin-gonic/gin"
+    "github.com/rinradaW/SA-G03/entity"
+    "github.com/gin-gonic/gin"
 
 
 )
@@ -25,26 +25,26 @@ func CreateJoinActivityHistory(c *gin.Context) {
     	return
     }
 
-    // 9: search *activity* with id
+    // 8: search *activity* with id
     if tx := entity.DB().Where("id = ?", joinactivityhistory.ActivityID).First(&activity); tx.RowsAffected == 0 {
     	c.JSON(http.StatusBadRequest, gin.H{"error": "activity not found"})
     	return
     }
 
     
-    // 10: search *student* with id
+    // 9: search *student* with id
     if tx := entity.DB().Where("id = ?", joinactivityhistory.StudentID).First(&student); tx.RowsAffected == 0 {
     	c.JSON(http.StatusBadRequest, gin.H{"error": "student not found"})
     	return
     }
 
-    // 11: search *editor* with id
+    // 10: search *editor* with id
     if tx := entity.DB().Where("id = ?", joinactivityhistory.EditorID).First(&editor); tx.RowsAffected == 0 {
     	c.JSON(http.StatusBadRequest, gin.H{"error": "editor not found"})
     	return
     }
 
-    // 12: create JoinActivityHistory
+    // 11: create JoinActivityHistory
     jah := entity.JoinActivityHistory{
     	Activity:      activity,            // โยงความสัมพันธ์กับ Entity Activity
     	Student:       student,             // โยงความสัมพันธ์กับ Entity Playlist
@@ -54,7 +54,7 @@ func CreateJoinActivityHistory(c *gin.Context) {
     	Timestamp:     joinactivityhistory.Timestamp,    // ตั้งค่าฟิลด์ Timestamp
     }
 
-    // 13: saved
+    // 12: save
     if err := entity.DB().Create(&jah).Error; err != nil {
     	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
     	return
@@ -62,7 +62,7 @@ func CreateJoinActivityHistory(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"data": jah})
 
 }
-//edited Oreload-committee to editor
+
 // GET /joinactivityhistories/:id
 func GetJoinActivityHistory(c *gin.Context) {
     var joinactivityhistory entity.JoinActivityHistory

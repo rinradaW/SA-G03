@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/rinradaW/SA-G03/controller"
 	"github.com/rinradaW/SA-G03/entity"
 	"github.com/rinradaW/SA-G03/middlewares"
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -54,12 +54,11 @@ func main() {
 			protected.PATCH("/join_activity_histories", controller.UpdateJoinActivityHistory)
 			protected.DELETE("/join_activity_histories/:id", controller.DeleteJoinActivityHistory)
 
-	
 		}
 	}
 
 	// Authentication Routes
-	r.POST("/login", controller.Login)
+	r.POST("/login", controller.LoginByClubCommittee)
 
 	//Run server
 	r.Run()

@@ -57,6 +57,17 @@ func GetClubCommittee(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": clubcommittee})
 }
 
+// GET /club_committees/std/:ID_Student
+func ClubCommitteefromstudentid(c *gin.Context) {
+	var clubcommittee entity.ClubCommittee
+	student := c.Param("ID_Student") //user.go
+	if err := entity.DB().Preload("Club").Raw("SELECT * FROM club_committees WHERE ID_Student = ?", student).Find(&clubcommittee).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} //preload object Club ตารางของ Club ใน type ClubCommittee struct
+	c.JSON(http.StatusOK, gin.H{"data": clubcommittee})
+}
+
 // PATCH /clubcommittees
 func UpdateClubCommittee(c *gin.Context) {
 	var clubcommittee entity.ClubCommittee

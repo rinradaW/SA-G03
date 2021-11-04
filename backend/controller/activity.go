@@ -35,6 +35,17 @@ func ListActivities(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": activities})
 }
 
+//clubandactivity
+func ClubwithActivity(c *gin.Context){
+	var activity []entity.Activity
+	ClubID := c.Param("ClubID")
+	if err := entity.DB().Preload("Club").Raw("SELECT * FROM activities WHERE club_id = ?", ClubID).Find(&activity).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": activity})
+}
+
 // GET /activity/:id
 // Get activity by id
 func GetActivity(c *gin.Context) {
